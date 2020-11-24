@@ -1,0 +1,125 @@
+//ali bani jaber 11743858 + code  print the sequence of moves coment 
+#include <iostream>
+using namespace std;
+
+struct cell{
+    int me=0;
+    int player2=0;
+    bool taken= false;
+};
+
+int max(int x ,int y){
+    if(x==y)
+        return x;
+    return x>y?x:y;
+}
+
+
+int card_war_dp(int* input_data, int size_data)
+{
+          
+        struct cell table_DP[size_data][size_data];
+    for(int i=0;i<size_data;i++){
+        table_DP[i][i].me=input_data[i];
+        table_DP[i][i].player2=0;
+    }
+
+    int pos1;
+    int pos2;
+
+    int offset=1;
+    while (offset <= size_data) {
+        for (int i = 0; i < size_data; i++) {
+            for (int j = i; j < size_data; j++) {
+                if (j == i + offset)
+                {
+                    int index1_j=j-1;//same i
+                    int index2_i=i+1;// same j
+                    int F=input_data[i];
+                    int B=input_data[j];
+
+
+                    table_DP[i][j].me=max(B+table_DP[i][j-1].player2 ,F+table_DP[i+1][j].player2);
+                    if(B+table_DP[i][j-1].player2>=F+table_DP[i+1][j].player2){
+                        table_DP[i][j].player2=table_DP[i][j-1].me;
+                    }
+                    else{
+                        table_DP[i][j].player2=table_DP[i+1][j].me;
+                    }
+
+
+
+
+
+                    //process
+                }
+
+            }
+        }
+        offset++;
+    }
+    //cout<<"endend end";
+//for(int i=0;i<size_data ;i++)
+//{
+//    for(int j=0;j<size_data;j++)
+//    {
+//        cout <<"["<<table_DP[i][j].me<<" , "<<table_DP[i][j].player2<<" ]";
+//    }
+//    cout <<endl;
+//
+//}
+
+
+//cout<<"fsd";
+    
+    //    int  c=0;
+//    int p = size_data-1;
+//    bool toggele= true;
+//    for (int n = size_data - 1; n >= 0; n--)
+//    {
+//        if(table_DP[c][p].player2 == table_DP[c+1][p].me){
+//            if(toggele){
+//                 cout << "F:" ;//<< table_DP[c][p].me-table_DP[c+1][p].player2 <<",";
+//                  }
+//            else{
+//                cout << "f:" ;//<< table_DP[c][p].me-table_DP[c+1][p].player2<<",";
+//                }
+//            c++;
+//        }
+//        else{
+//            if(toggele){
+//                cout << "B:"; //<< table_DP[c][p].me-table_DP[c][p-1].player2<<",";
+//            }
+//            else{
+//                cout << "b:" ;//<< //table_DP[c][p].me-table_DP[c][p-1].player2<<",";
+//            }
+//            p--;
+//        }
+//
+//        toggele=!toggele;
+//    }
+
+    
+    
+    
+    
+    return table_DP[0][size_data - 1].me;
+    
+}
+int main()
+{
+    int size_data ;
+    cin >>size_data;
+    int * data=new int [size_data];
+    int tmp=0;
+    for(int i=0;i<size_data;i++)
+    {
+        cin>> tmp;
+        data[i]=tmp;
+        
+    }
+    cout<<card_war_dp(data,size_data);
+
+
+return 0;
+}
